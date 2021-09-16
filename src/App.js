@@ -4,6 +4,7 @@ import Errors from './components/static/Errors';
 import Home from './components/static/Home';
 import ListVideos from './components/videos/ListVideos';
 import NewVideo from './components/videos/NewVideo';
+import Video from './components/videos/Video';
 
 function App() {
   const [errors, setErrors] = useState([]);
@@ -23,6 +24,7 @@ function App() {
           <Route exact path="/" component={ Home } />
           <Route exact path="/videos" render={ (props) => <ListVideos {...props} clearErrors={ clearErrors } /> } />
           <Route exact path="/videos/new" render={ (props) =>  <NewVideo { ...props } handleErrors={ handleErrors } />} />
+          <Route exact path="/videos/:id" component={ Video } />
           <Router render={ () => <h1>Bad route</h1> } />
         </Switch>
       </div>

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom';
 
 const ListVideos = ({ clearErrors }) => {
   const [videos, setVideos] = useState([])
@@ -10,7 +11,7 @@ const ListVideos = ({ clearErrors }) => {
       .then(data => setVideos(data))
   }, [])
 
-  const videoLis = videos.map((video) => <li key={video.id}>{ video.title} </li>)
+  const videoLis = videos.map((video) => <li key={video.id}><NavLink to={`/videos/${ video.id }`}>{ video.title}</NavLink></li>)
 
   return (
 
