@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import Navbar from './components/navigation/Navbar';
 import Errors from './components/static/Errors';
 import Home from './components/static/Home';
 import ListVideos from './components/videos/ListVideos';
@@ -18,6 +19,7 @@ function App() {
   
   return (
     <Router>
+      <Navbar />
       <Errors errors={ errors } />
       <div className="App">
         <Switch>

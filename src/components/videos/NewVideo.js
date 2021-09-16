@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
 const NewVideo = ({ handleErrors }) => {
@@ -9,9 +9,24 @@ const NewVideo = ({ handleErrors }) => {
     length: 0.0,
     genre: ""
   })
+  const [content, setContent] = useState('');
+  const [user, setUser] = useState({});
   const [errors, setErrors] = useState([])
+  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
+
+  const loadUser = async () => {
+    const resp = await fetch('http://localhost:3001/users/1');
+    const data = await resp.json();
+    setUser(data);
+    console.log('user', data)
+    setLoading(false);
+  }
+
+  useEffect(() => {
+    loadUser();
+  },[])
 
   const handleChange = e => {
     setState({
@@ -23,13 +38,25 @@ const NewVideo = ({ handleErrors }) => {
   const handleSubmit = e => {
     e.preventDefault();
 
+    console.log('state', state);
+    console.log('content', content);
+    console.log('user', user);
+
     fetch('http://localhost:3001/videos', {
       method: "POST",
       headers: {
         "Accept": "application/json",
         "Content-Type": "application/json"
       },
-      body: JSON.stringify(state)
+      body: JSON.stringify({
+        ...state,
+        reviews_attributes: [
+          {
+            content,
+            user_id: user.id
+          }
+        ]
+      })
     })
     .then(resp => {
       if(resp.status !== 404) {
@@ -48,7 +75,7 @@ const NewVideo = ({ handleErrors }) => {
     .catch(errors => console.log(errors))
   }
 
-  
+  if(loading){ return <h1>Loading...</h1>}
 
   return (
     <div>
@@ -73,6 +100,12 @@ const NewVideo = ({ handleErrors }) => {
         <div>
           <label htmlFor="genre">Genre: </label>
           <input type="text" id="genre" name="genre" value={ state.genre } onChange={ handleChange } />
+        </div>
+
+        <h3>Create Review On This Movie</h3>
+        <div>
+          <label htmlFor="content">Review Content: </label><br/>
+          <textarea id="content" value={ content } onChange={ (e) => setContent(e.target.value) } />
         </div>
 
         <input type="submit" value={ "Create Video" } />
