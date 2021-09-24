@@ -42,7 +42,7 @@ const NewVideo = ({ handleErrors }) => {
     console.log('content', content);
     console.log('user', user);
 
-    fetch('http://localhost:3001/videos', {
+    fetch('http://localhost:3001/api/v1/videos', {
       method: "POST",
       headers: {
         "Accept": "application/json",

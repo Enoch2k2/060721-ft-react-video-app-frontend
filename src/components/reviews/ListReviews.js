@@ -1,6 +1,6 @@
 const ListReviews = ({ reviews }) => {
 
-  const reviewLis = reviews.map((review) => <li key={ review.id }>{ review.user.first_name[0] + review.user.last_name[0]} says: { review.content }</li>)
+  const reviewLis = reviews ? reviews.map((review) => <li key={ review.id }>{ review.username } says: { review.content }</li>) : null
   return (
     <ul>
       { reviewLis }

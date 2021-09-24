@@ -6,7 +6,7 @@ const ListVideos = ({ clearErrors }) => {
 
   useEffect(() => {
     clearErrors();
-    fetch('http://localhost:3001/videos')
+    fetch('http://localhost:3001/api/v1/videos')
       .then(resp => resp.json())
       .then(data => setVideos(data))
   }, [])

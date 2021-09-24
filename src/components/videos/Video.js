@@ -13,7 +13,7 @@ const Video = () => {
   const [loading, setLoading] = useState(true);
 
   const loadVideo = async () => {
-    const resp = await fetch(`http://localhost:3001/videos/${ id }`)
+    const resp = await fetch(`http://localhost:3001/api/v1/videos/${ id }`)
     const data = await resp.json();
     setVideo(data);
     setReviews(data.reviews);
@@ -21,7 +21,7 @@ const Video = () => {
   }
 
   const loadUser = async () => {
-    const resp = await fetch('http://localhost:3001/users/1');
+    const resp = await fetch('http://localhost:3001/api/v1/users/1');
     const data = await resp.json();
     setUser(data);
     console.log('user', data)
