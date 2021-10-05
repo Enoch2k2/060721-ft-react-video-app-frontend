@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
+import { useHistory } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ loginUser }) => {
   const [state, setState] = useState({
     email: "",
     password: ""
   })
+
+  const history = useHistory();
 
   const handleChange = e => {
     setState({
@@ -13,8 +16,23 @@ const Login = () => {
     })
   }
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
+
+    const resp = await fetch('http://localhost:3001/api/v1/login', {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(state)
+    })
+
+    const data = await resp.json();
+
+    localStorage.setItem('jwt', data.jwt);
+    loginUser(data.user);
+    history.push('/')    
   }
   
   return (

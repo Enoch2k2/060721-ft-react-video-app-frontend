@@ -13,7 +13,13 @@ const Video = () => {
   const [loading, setLoading] = useState(true);
 
   const loadVideo = async () => {
-    const resp = await fetch(`http://localhost:3001/api/v1/videos/${ id }`)
+    const resp = await fetch(`http://localhost:3001/api/v1/videos/${ id }`, {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `bearer ${ localStorage.getItem('jwt') }`
+      }
+    })
     const data = await resp.json();
     setVideo(data);
     setReviews(data.reviews);
@@ -21,7 +27,13 @@ const Video = () => {
   }
 
   const loadUser = async () => {
-    const resp = await fetch('http://localhost:3001/api/v1/users/1');
+    const resp = await fetch('http://localhost:3001/api/v1/users/1', {
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+        "Authorization": `bearer ${ localStorage.getItem('jwt') }`
+      }
+    });
     const data = await resp.json();
     setUser(data);
     console.log('user', data)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom';
 
-const NewVideo = ({ handleErrors }) => {
+const NewVideo = ({ handleErrors, currentUser }) => {
   const [state, setState] = useState({
     title: "",
     category: "",
@@ -10,23 +10,9 @@ const NewVideo = ({ handleErrors }) => {
     genre: ""
   })
   const [content, setContent] = useState('');
-  const [user, setUser] = useState({});
   const [errors, setErrors] = useState([])
-  const [loading, setLoading] = useState(true);
 
   const history = useHistory();
-
-  const loadUser = async () => {
-    const resp = await fetch('http://localhost:3001/users/1');
-    const data = await resp.json();
-    setUser(data);
-    console.log('user', data)
-    setLoading(false);
-  }
-
-  useEffect(() => {
-    loadUser();
-  },[])
 
   const handleChange = e => {
     setState({
@@ -40,7 +26,7 @@ const NewVideo = ({ handleErrors }) => {
 
     console.log('state', state);
     console.log('content', content);
-    console.log('user', user);
+    console.log('user', currentUser);
 
     fetch('http://localhost:3001/api/v1/videos', {
       method: "POST",
@@ -53,7 +39,7 @@ const NewVideo = ({ handleErrors }) => {
         reviews_attributes: [
           {
             content,
-            user_id: user.id
+            user_id: currentUser.id
           }
         ]
       })
@@ -74,8 +60,6 @@ const NewVideo = ({ handleErrors }) => {
     })
     .catch(errors => console.log(errors))
   }
-
-  if(loading){ return <h1>Loading...</h1>}
 
   return (
     <div>
