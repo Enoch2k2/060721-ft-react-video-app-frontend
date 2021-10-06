@@ -32,7 +32,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      {/* <Errors /> */}
+      <Errors />
       <div className="App">
         <Switch>
           <Route exact path="/" component={ Home } />

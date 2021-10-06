@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { signup } from '../../actions/sessions'
 import { useHistory } from 'react-router'
-const Signup = ({loginUser}) => {
+const Signup = () => {
   const [state, setState] = useState({
     email: "",
     password: "",
@@ -9,6 +11,7 @@ const Signup = ({loginUser}) => {
   })
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     setState({
@@ -20,19 +23,19 @@ const Signup = ({loginUser}) => {
   const handleSubmit = async e => {
     e.preventDefault();
 
-    const resp = await fetch('http://localhost:3001/api/v1/signup', {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(state)
-    })
+    // const resp = await fetch('http://localhost:3001/api/v1/signup', {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept": "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify(state)
+    // })
 
-    const data = await resp.json();
+    // const data = await resp.json();
 
-    localStorage.setItem('jwt', data.jwt);
-    loginUser(data.user);
+    // localStorage.setItem('jwt', data.jwt);
+    dispatch(signup(state))
     history.push('/')
   }
 

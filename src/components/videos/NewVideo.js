@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { addVideo } from '../../actions/videos';
 
-const NewVideo = ({ handleErrors, currentUser }) => {
+const NewVideo = () => {
   const [state, setState] = useState({
     title: "",
     category: "",
@@ -9,11 +11,13 @@ const NewVideo = ({ handleErrors, currentUser }) => {
     length: 0.0,
     genre: ""
   })
+
+  const currentUser = useSelector(state => state.sessions.currentUser)
   const [content, setContent] = useState('');
   const [errors, setErrors] = useState([])
 
   const history = useHistory();
-
+  const dispatch = useDispatch();
   const handleChange = e => {
     setState({
       ...state,
@@ -28,37 +32,39 @@ const NewVideo = ({ handleErrors, currentUser }) => {
     console.log('content', content);
     console.log('user', currentUser);
 
-    fetch('http://localhost:3001/api/v1/videos', {
-      method: "POST",
-      headers: {
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        ...state,
-        reviews_attributes: [
-          {
-            content,
-            user_id: currentUser.id
-          }
-        ]
-      })
-    })
-    .then(resp => {
-      if(resp.status !== 404) {
-        return resp.json()
-      } else {
-        throw new Error(resp.statusText)
-      }
-    })
-    .then(data => {
-      if(data.errors) {
-        handleErrors(data.errors)
-      } else {
+    dispatch(addVideo(state, content, currentUser));
+
+    // fetch('http://localhost:3001/api/v1/videos', {
+    //   method: "POST",
+    //   headers: {
+    //     "Accept": "application/json",
+    //     "Content-Type": "application/json"
+    //   },
+    //   body: JSON.stringify({
+    //     ...state,
+    //     reviews_attributes: [
+    //       {
+    //         content,
+    //         user_id: currentUser.id
+    //       }
+    //     ]
+    //   })
+    // })
+    // .then(resp => {
+    //   if(resp.status !== 404) {
+    //     return resp.json()
+    //   } else {
+    //     throw new Error(resp.statusText)
+    //   }
+    // })
+    // .then(data => {
+    //   if(data.errors) {
+    //     handleErrors(data.errors)
+    //   } else {
         history.push('/videos');
-      }
-    })
-    .catch(errors => console.log(errors))
+    //   }
+    // })
+    // .catch(errors => console.log(errors))
   }
 
   return (
