@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getCurrentUser } from './actions/sessions';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import Navbar from './components/navigation/Navbar';
 import Login from './components/sessions/Login';
@@ -10,7 +12,8 @@ import NewVideo from './components/videos/NewVideo';
 import Video from './components/videos/Video';
 
 function App() {
-
+  const requesting = useSelector(state => state.requesting);
+  const dispatch = useDispatch();
   // useEffect(() => {
   //   const token = localStorage.getItem('jwt');
 
@@ -28,6 +31,11 @@ function App() {
   //       })
   //   }
   // }, [])
+  useEffect(() => {
+    dispatch(getCurrentUser())
+  }, [])
+
+
   
   return (
     <Router>
